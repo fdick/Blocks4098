@@ -1,9 +1,7 @@
-using System;
 using Code.Datas;
 using Code.Pools;
 using Code.Services;
 using Unity.Mathematics;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -17,8 +15,10 @@ namespace Code.Views
         [Inject] private IInputService _inputService;
         [Inject] private SceneData _sceneData;
         [Inject] private ICubeMovementService _cubeMovementService;
+        [Inject] private AudioService _audioService;
         private CubeMove _currentCube;
         private float _savedTime;
+        [SerializeField] private AudioClip _startCubeSound;
 
         private void Awake()
         {
@@ -57,6 +57,8 @@ namespace Code.Views
             if (c.TryGetComponent<Rigidbody>(out var rb))
             {
                 rb.Sleep();
+                rb.isKinematic = true;
+                rb.detectCollisions = false;
             }
         }
 
@@ -81,11 +83,14 @@ namespace Code.Views
                 return;
             if (_currentCube.TryGetComponent<Rigidbody>(out var rb))
             {
-                rb.WakeUp();
+                rb.isKinematic = false;
+                rb.detectCollisions = true;
             }
 
             _currentCube.UpdateVelocity();
             _currentCube = null;
+
+            _audioService.PlaySound(_startCubeSound);
         }
 
         private bool CheckCD(float cd)

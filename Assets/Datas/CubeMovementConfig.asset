@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: CubeMovementConfig
   m_EditorClassIdentifier: 
   <PointerSensivityResistance>k__BackingField: 200
-  <MovementRange>k__BackingField: 1.5
+  <MovementRange>k__BackingField: 1.8
+  <SpawnDelay>k__BackingField: 1

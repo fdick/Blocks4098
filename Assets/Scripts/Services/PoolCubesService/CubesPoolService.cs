@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Code.Actors;
 using Code.Factories;
 using Code.Services;
-using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Code.Pools
@@ -82,9 +80,5 @@ namespace Code.Pools
         {
             cube.gameObject.SetActive(false);
         }
-
-       
-
-       
     }
 }

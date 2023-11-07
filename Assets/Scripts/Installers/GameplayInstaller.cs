@@ -20,6 +20,9 @@ namespace Code.Installers
             var cubeConfiguration = new CubeConfigurationService(_sceneData);
             var cubesPool = new CubesPoolService(cubeFactory, cubeConfiguration, _sceneData.CubesPoolConfig.PoolCapacity);
             var cubeMove = new CubeMovementService(_sceneData);
+            var effectFactory = new EffectsFactory(assetProvider, Container);
+            var effectPool = new EffectsPoolService(effectFactory, _sceneData.CubesPoolConfig.PoolCapacity);
+            var audio = new AudioService(_sceneData.BackgroundMusicSource, _sceneData.GameplaySoundsSource);
             Container.BindInterfacesAndSelfTo<CubeFactory>().FromInstance(cubeFactory).AsSingle();
             Container.Bind<CubesPoolService>().FromInstance(cubesPool).AsSingle();
             Container.BindInterfacesAndSelfTo<InputService>().FromNew().AsSingle();
@@ -28,6 +31,8 @@ namespace Code.Installers
             Container.BindInterfacesAndSelfTo<CubeMovementService>().FromInstance(cubeMove).AsSingle();
             Container.Bind<SceneData>().FromInstance(_sceneData).AsSingle();
             Container.Bind<GameplayStateMachine>().FromNew().AsSingle();
+            Container.Bind<EffectsPoolService>().FromInstance(effectPool).AsSingle();
+            Container.Bind<AudioService>().FromInstance(audio).AsSingle();
         }
     }
 }
