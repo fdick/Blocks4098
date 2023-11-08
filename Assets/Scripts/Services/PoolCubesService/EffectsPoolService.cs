@@ -65,17 +65,17 @@ namespace Code.Services
 
         private ParticleSystem CreateEffect()
         {
-            return _effectsFactory.CreateEffect("effectName");
+            return _effectsFactory.CreateEffect("NewCubeEffect");
         }
 
-        private void OnTakeFromPool(ParticleSystem cube)
+        private void OnTakeFromPool(ParticleSystem effect)
         {
-            cube.gameObject.SetActive(true);
+            effect.gameObject.SetActive(true);
         }
 
-        private void OnReturnToPool(ParticleSystem cube)
+        private void OnReturnToPool(ParticleSystem effect)
         {
-            cube.gameObject.SetActive(false);
+            effect.gameObject.SetActive(false);
         }
     }
 }

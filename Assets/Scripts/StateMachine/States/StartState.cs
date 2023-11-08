@@ -20,7 +20,7 @@ public class StartState : IState
         _sceneData.CubesStarter.Activated = true;
         
         //play background music
-        _audio.PlayMusic();
+        _audio.PlayMusic(null, true);
     }
 
     public void Exit()
