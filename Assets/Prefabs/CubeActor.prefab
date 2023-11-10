@@ -200,5 +200,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collision: {fileID: 7328361111768855500}
-  _sameCubeCollisionSound: {fileID: 0}
-  _cubeCollisionSound: {fileID: 0}
+  _sameCubeCollisionSound: {fileID: 8300000, guid: 5e13d25125b3c4d1e99f62a192d55ef7, type: 3}
+  _cubeCollisionSound: {fileID: 8300000, guid: 2685214b0bdc64d72b5edf26c26c1b99, type: 3}
