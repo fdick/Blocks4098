@@ -6,7 +6,7 @@ namespace Code.Views
     {
         private void OnApplicationPause(bool pauseStatus)
         {
-            IronSource.Agent.onApplicationPause(pauseStatus);
+            // IronSource.Agent.onApplicationPause(pauseStatus);
         }
     }
 }
