@@ -1,3 +1,4 @@
+using Code.Datas;
 using Code.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +9,12 @@ namespace Code.Views
     public class InputUpdator : MonoBehaviour, IPointerMoveHandler
     {
         [Inject] private InputService _inputService;
+        [Inject] private SceneData _sceneData;
+
+        private void Awake()
+        {
+            _inputService.StartTap += OnStartTap;
+        }
 
         private void Update()
         {
@@ -17,6 +24,11 @@ namespace Code.Views
         public void OnPointerMove(PointerEventData eventData)
         {
             _inputService.HoldTap?.Invoke(eventData.delta);
+        }
+
+        private void OnStartTap()
+        {
+            _sceneData.StartPanelGO.SetActive(false);
         }
     }
 }

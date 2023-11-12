@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Code.Services;
 using TMPro;
 using UnityEngine;
@@ -11,6 +8,7 @@ namespace Code.Views
     public class TopPanelView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _recordText;
+        [SerializeField] private TextMeshProUGUI _lastRecordText;
         [Inject] private ProgressService _progress;
 
         private void Awake()
@@ -27,6 +25,11 @@ namespace Code.Views
         public void SetRecord(int record)
         {
             _recordText.text = record.ToString();
+        }
+        
+        public void SetLastRecord(int record)
+        {
+            _lastRecordText.text = record.ToString();
         }
 
 

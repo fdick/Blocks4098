@@ -10,6 +10,7 @@ namespace Code.Views
         [Inject] private AudioService _audioService;
         [SerializeField] private AudioClip _sameCubeCollisionSound;
         [SerializeField] private AudioClip _cubeCollisionSound;
+        private bool _isFirstTimeSound;
 
         private void Awake()
         {
@@ -24,7 +25,10 @@ namespace Code.Views
             }
             else
             {
+                if(_isFirstTimeSound)
+                    return;
                 _audioService.PlaySound(_cubeCollisionSound);
+                _isFirstTimeSound = true;
             }
         }
     }

@@ -16,6 +16,7 @@ namespace Code.Datas
         [field: SerializeField] public EndPanelView EndPanel { get; private set; }
         [field: SerializeField] public AudioSource BackgroundMusicSource { get; private set; }
         [field: SerializeField] public AudioSource GameplaySoundsSource { get; private set; }
+        [field: SerializeField] public GameObject StartPanelGO { get; private set; }
         
         public Transform CubeSpawnPoint { get; set; }
     }

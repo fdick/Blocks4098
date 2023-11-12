@@ -11,13 +11,13 @@ namespace Code.StateMachine
     public class GameplayStateMachine : StateMachine
     {
         public GameplayStateMachine(IBasketFactory basketFactory, SceneData sceneData, CubesPoolService cubesPool,
-            AudioService audioService, EffectsPoolService effectPoolService)
+            AudioService audioService, EffectsPoolService effectPoolService, ProgressService progress, AdsService ads)
         {
             _states = new Dictionary<Type, IState>()
             {
-                [typeof(InitState)] = new InitState(this, basketFactory, sceneData, cubesPool, effectPoolService),
+                [typeof(InitState)] = new InitState(this, basketFactory, sceneData, cubesPool, effectPoolService, progress),
                 [typeof(StartState)] = new StartState(sceneData, audioService),
-                [typeof(EndState)] = new EndState(sceneData)
+                [typeof(EndState)] = new EndState(sceneData, progress, ads)
             };
         }
     }

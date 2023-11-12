@@ -11,13 +11,14 @@ namespace Code.StateMachine.States
     public class InitState : IState
     {
         public InitState(GameplayStateMachine stateMachine, IBasketFactory basketFactory, SceneData sceneData,
-            CubesPoolService cubesPoolService, EffectsPoolService effectPoolService)
+            CubesPoolService cubesPoolService, EffectsPoolService effectPoolService, ProgressService progressService)
         {
             _stateMachine = stateMachine;
             _basketFactory = basketFactory;
             _sceneData = sceneData;
             _cubesPoolService = cubesPoolService;
             _effectsPoolService = effectPoolService;
+            _progressService = progressService;
         }
 
         private IBasketFactory _basketFactory;
@@ -25,6 +26,7 @@ namespace Code.StateMachine.States
         private GameplayStateMachine _stateMachine;
         private CubesPoolService _cubesPoolService;
         private EffectsPoolService _effectsPoolService;
+        private ProgressService _progressService;
 
 
         public void Enter()
@@ -35,10 +37,16 @@ namespace Code.StateMachine.States
             //set cube spawn point
             _sceneData.CubeSpawnPoint = map.CubeSpawnPoint;
             //enable ui
-            GameObject.FindObjectOfType<TopPanelView>(true).gameObject.SetActive(true);
+            var topPanel = GameObject.FindObjectOfType<TopPanelView>(true);
+            topPanel.SetLastRecord(_progressService.LastRecord);
+            topPanel.gameObject.SetActive(true);
             //init pool
             _cubesPoolService.InitializePoolByOriginCapacity();
             _effectsPoolService.InitializePoolByOriginCapacity();
+            
+            //enable startPanel UI
+            _sceneData.StartPanelGO.SetActive(true);
+            
 
             _stateMachine.Enter<StartState>();
         }
