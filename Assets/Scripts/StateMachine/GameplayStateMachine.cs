@@ -15,7 +15,7 @@ namespace Code.StateMachine
         {
             _states = new Dictionary<Type, IState>()
             {
-                [typeof(InitState)] = new InitState(this, basketFactory, sceneData, cubesPool, effectPoolService, progress),
+                [typeof(InitState)] = new InitState(this, basketFactory, sceneData, cubesPool, effectPoolService, progress, ads),
                 [typeof(StartState)] = new StartState(sceneData, audioService),
                 [typeof(EndState)] = new EndState(sceneData, progress, ads)
             };

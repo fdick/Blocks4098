@@ -11,7 +11,8 @@ namespace Code.StateMachine.States
     public class InitState : IState
     {
         public InitState(GameplayStateMachine stateMachine, IBasketFactory basketFactory, SceneData sceneData,
-            CubesPoolService cubesPoolService, EffectsPoolService effectPoolService, ProgressService progressService)
+            CubesPoolService cubesPoolService, EffectsPoolService effectPoolService, ProgressService progressService,
+            AdsService adsService)
         {
             _stateMachine = stateMachine;
             _basketFactory = basketFactory;
@@ -19,6 +20,7 @@ namespace Code.StateMachine.States
             _cubesPoolService = cubesPoolService;
             _effectsPoolService = effectPoolService;
             _progressService = progressService;
+            _adsService = adsService;
         }
 
         private IBasketFactory _basketFactory;
@@ -27,6 +29,7 @@ namespace Code.StateMachine.States
         private CubesPoolService _cubesPoolService;
         private EffectsPoolService _effectsPoolService;
         private ProgressService _progressService;
+        private AdsService _adsService;
 
 
         public void Enter()
@@ -46,6 +49,9 @@ namespace Code.StateMachine.States
             
             //enable startPanel UI
             _sceneData.StartPanelGO.SetActive(true);
+            
+            //init ads banner on bottom
+            _adsService.ShowHideBanner(true, BannerPositions.Bottom);
             
 
             _stateMachine.Enter<StartState>();

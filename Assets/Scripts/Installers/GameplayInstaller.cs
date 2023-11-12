@@ -25,7 +25,8 @@ namespace Code.Installers
             var effectPool = new EffectsPoolService(effectFactory, _sceneData.CubesPoolConfig.PoolCapacity);
             var audio = new AudioService(_sceneData.BackgroundMusicSource, _sceneData.GameplaySoundsSource);
             var saveLoad = new SaveLoadService();
-            var progress = new ProgressService(saveLoad);
+            var ads = new AdsService();
+            var progress = new ProgressService(saveLoad, ads);
             Container.BindInterfacesAndSelfTo<CubeFactory>().FromInstance(cubeFactory).AsSingle();
             Container.Bind<CubesPoolService>().FromInstance(cubesPool).AsSingle();
             Container.BindInterfacesAndSelfTo<InputService>().FromNew().AsSingle();
@@ -37,7 +38,7 @@ namespace Code.Installers
             Container.Bind<GameplayStateMachine>().FromNew().AsSingle();
             Container.Bind<EffectsPoolService>().FromInstance(effectPool).AsSingle();
             Container.Bind<AudioService>().FromInstance(audio).AsSingle();
-            Container.Bind<AdsService>().FromNew().AsSingle();
+            Container.Bind<AdsService>().FromInstance(ads).AsSingle();
         }
     }
 }
