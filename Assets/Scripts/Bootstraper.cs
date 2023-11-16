@@ -23,9 +23,20 @@ namespace Code.Views
 #elif UNITY_EDITOR
             _gameId = _androidGameId; //Only for testing the functionality in the Editor
 #endif
+
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                SceneManager.LoadScene(1);
+                return;
+            }
+
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {
                 Advertisement.Initialize(_gameId, _testMode, this);
+            }
+            else
+            {
+                SceneManager.LoadScene(1);
             }
         }
 
@@ -40,7 +51,6 @@ namespace Code.Views
         {
             Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
             SceneManager.LoadScene(1);
-
         }
     }
 }
