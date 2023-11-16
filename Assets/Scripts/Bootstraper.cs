@@ -1,28 +1,46 @@
-using System.Collections.Generic;
-using AppodealAds.Unity.Api;
-using AppodealAds.Unity.Common;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 
 namespace Code.Views
 {
-    public class Bootstraper : MonoBehaviour, IAppodealInitializationListener
+    public class Bootstraper : MonoBehaviour, IUnityAdsInitializationListener
     {
-        private const string APP_KEY = "835f7f37b59a429f2341d25f4725c16923697f54fd7ee6bb";
-        private const int AD_TYPES = Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.REWARDED_VIDEO | Appodeal.MREC;
+        string _androidGameId = "5475178";
+        [SerializeField] bool _testMode = true;
+        private string _gameId;
 
         private void Awake()
         {
-            //init ironSource
-            Appodeal.setTesting(true);
-            Appodeal.muteVideosIfCallsMuted(true);
-            Appodeal.initialize(APP_KEY, AD_TYPES, this);
+            Application.targetFrameRate = 60;
+            InitializeAds();
         }
 
-        public void onInitializationFinished(List<string> errors)
+        public void InitializeAds()
         {
+#if UNITY_ANDROID
+            _gameId = _androidGameId;
+#elif UNITY_EDITOR
+            _gameId = _androidGameId; //Only for testing the functionality in the Editor
+#endif
+            if (!Advertisement.isInitialized && Advertisement.isSupported)
+            {
+                Advertisement.Initialize(_gameId, _testMode, this);
+            }
+        }
+
+        public void OnInitializationComplete()
+        {
+            Debug.Log("Unity Ads initialization complete.");
             //load setting and other data
             SceneManager.LoadScene(1);
+        }
+
+        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        {
+            Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
+            SceneManager.LoadScene(1);
+
         }
     }
 }

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CubeMat
-  m_Shader: {fileID: -6465566751694194690, guid: 5a7f4e8fc7fb6b74e982c9d0636b1da3, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: ce17bd7294de5fc49bcd07bd8821ea6b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0fe039d41c0b0ec42a54cbbf0c88df95, type: 3}
+        m_Texture: {fileID: 2800000, guid: bfeb3151d644bf44791d2e72b6556d1e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

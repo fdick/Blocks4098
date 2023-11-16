@@ -51,7 +51,10 @@ namespace Code.StateMachine.States
             _sceneData.StartPanelGO.SetActive(true);
             
             //init ads banner on bottom
-            _adsService.ShowHideBanner(true, BannerPositions.Bottom);
+            _adsService.LoadBanner(_adsService.ANDROID_BANNER_ID, () =>
+            {
+                _adsService.ShowBanner(_adsService.ANDROID_BANNER_ID);
+            });
             
 
             _stateMachine.Enter<StartState>();

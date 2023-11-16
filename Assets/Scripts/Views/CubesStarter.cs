@@ -1,7 +1,7 @@
+using System;
 using Code.Datas;
 using Code.Pools;
 using Code.Services;
-using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -19,12 +19,18 @@ namespace Code.Views
         private CubeMove _currentCube;
         private float _savedTime;
         [SerializeField] private AudioClip _startCubeSound;
+        private CleanSpawnRegion _cleanSpawn;
 
         private void Awake()
         {
             _inputService.StartTap += OnStartTap;
             _inputService.HoldTap += SetCubePosition;
             _inputService.EndTap += StartCube;
+        }
+
+        private void Start()
+        {
+            _cleanSpawn = FindObjectOfType<CleanSpawnRegion>();
         }
 
 
@@ -43,11 +49,15 @@ namespace Code.Views
 
             if (!CheckCD(_sceneData.CubeMovementConfiguration.SpawnDelay))
                 return;
+
+            if (_cleanSpawn.IsCubesOnSpawnPosition)
+                return;
+
             _savedTime = Time.time;
 
 
             var c = _poolService.Get(GetRandomIndex());
-            c.transform.SetPositionAndRotation(_sceneData.CubeSpawnPoint.position, quaternion.identity);
+            c.transform.SetPositionAndRotation(_sceneData.CubeSpawnPoint.position, Quaternion.identity);
 
             if (c.TryGetComponent(out CubeMove move))
             {
@@ -72,7 +82,7 @@ namespace Code.Views
 
             _currentCube.transform.position =
                 _cubeMovementService.GetPreparePosition(_currentCube.transform.position, delta);
-            _currentCube.transform.rotation = quaternion.identity;
+            _currentCube.transform.rotation = Quaternion.identity;
         }
 
         private void StartCube()

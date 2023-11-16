@@ -1,6 +1,6 @@
 using System;
-using AppodealAds.Unity.Api;
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 namespace Code.Services
 {
@@ -11,70 +11,116 @@ namespace Code.Services
         Bottom,
         Left
     }
-    
-    public class AdsService
+
+    public class AdsService : IUnityAdsLoadListener, IUnityAdsShowListener
     {
-        //Banner ad
-        public void LoadBanner()
+        public readonly string ANDROID_REWARDED_ID = "Rewarded_Android";
+        public readonly string ANDROID_INTERSTITIAL_ID = "Interstitial_Android";
+        public readonly string ANDROID_BANNER_ID = "Banner_Android";
+
+        public Action<string> OnLoadedAd { get; set; }
+        public Action OnLoadedBanner { get; set; }
+        public Action<string, UnityAdsShowCompletionState> OnCompletedAd { get; set; }
+
+        public void LoadAdUnit(string adUnitID, Action<string> onLoaded = null)
         {
-            
+            OnLoadedAd = onLoaded;
+            Advertisement.Load(adUnitID, this);
         }
 
-        public void ShowHideBanner(bool show, BannerPositions bannerPos)
+        public void ShowAdUnit(string adUnitID)
         {
-            if (!show)
-            {
-                Appodeal.hide(Appodeal.BANNER);
-                return;
-            }
-            
-            switch (bannerPos)
-            {
-                case BannerPositions.Top:
-                    Appodeal.show(Appodeal.BANNER_TOP);
-                    break;
-                case BannerPositions.Right:
-                    Appodeal.show(Appodeal.BANNER_RIGHT);
-                    break;
-                case BannerPositions.Bottom:
-                    Appodeal.show(Appodeal.BANNER_BOTTOM);
-                    break;
-                case BannerPositions.Left:
-                    Appodeal.show(Appodeal.BANNER_LEFT);
-                    break;
-            }
-        }
-        
-        //reward ad
-        public void LoadRewardAd()
-        {
-            
+            Advertisement.Show(adUnitID, this);
         }
 
-        public void ShowRewardAd()
+        // Implement a method to call when the Load Banner button is clicked:
+        public void LoadBanner(string bannerID, Action onBannerLoaded = null, BannerPosition bannerPosition = BannerPosition.BOTTOM_CENTER)
         {
-            if (!Appodeal.isLoaded(Appodeal.REWARDED_VIDEO))
+            OnLoadedBanner = onBannerLoaded;
+            Advertisement.Banner.SetPosition(bannerPosition);
+            // Set up options to notify the SDK of load events:
+            BannerLoadOptions options = new BannerLoadOptions
             {
-                Debug.Log($"{Appodeal.REWARDED_VIDEO} Ad is not loaded!");
-                return;
-            }
-            Appodeal.show(Appodeal.REWARDED_VIDEO);
-        }
-        
-        //Interstition ad
-        public void LoadInterstitionAd()
-        {
-            
+                loadCallback = OnBannerLoaded,
+                errorCallback = OnBannerError
+            };
+
+            // Load the Ad Unit with banner content:
+            Advertisement.Banner.Load(bannerID, options);
         }
 
-        public void ShowInterstitialAd()
+        // Implement a method to call when the Show Banner button is clicked:
+        public void ShowBanner(string bannerID)
         {
-            if (!Appodeal.isLoaded(Appodeal.INTERSTITIAL))
+            // Set up options to notify the SDK of show events:
+            BannerOptions options = new BannerOptions
             {
-                Debug.Log($"{Appodeal.INTERSTITIAL} Ad is not loaded!");
-                return;
-            }
-            Appodeal.show(Appodeal.INTERSTITIAL);
+                clickCallback = OnBannerClicked,
+                hideCallback = OnBannerHidden,
+                showCallback = OnBannerShown
+            };
+
+            // Show the loaded Banner Ad Unit:
+            Advertisement.Banner.Show(bannerID, options);
+        }
+
+        public void HideBanner(bool destroyBanner = false)
+        {
+            Advertisement.Banner.Hide(destroyBanner);
+        }
+
+        private void OnBannerShown()
+        {
+        }
+
+        private void OnBannerHidden()
+        {
+        }
+
+        private void OnBannerClicked()
+        {
+        }
+
+        private void OnBannerError(string message)
+        {
+        }
+
+        private void OnBannerLoaded()
+        {
+            OnLoadedBanner?.Invoke();
+            OnLoadedBanner = null;
+        }
+
+
+        public void OnUnityAdsAdLoaded(string placementId)
+        {
+            Debug.Log("Ad Loaded: " + placementId);
+            OnLoadedAd?.Invoke(placementId);
+            OnLoadedAd = null;
+        }
+
+        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+        {
+            Debug.Log($"Error loading Ad Unit {placementId}: {error.ToString()} - {message}");
+        }
+
+        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+        {
+        }
+
+        public void OnUnityAdsShowStart(string placementId)
+        {
+        }
+
+        public void OnUnityAdsShowClick(string placementId)
+        {
+        }
+
+        public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+        {
+            Debug.Log($"Showing Ad Unit {placementId}: state is {showCompletionState}");
+            OnCompletedAd?.Invoke(placementId, showCompletionState);
+            OnCompletedAd = null;
         }
     }
 }

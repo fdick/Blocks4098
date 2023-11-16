@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Code.Actors;
 using Code.Pools;
 using UnityEngine;
@@ -14,6 +12,7 @@ namespace Code.Views
         [Inject] private CubesPoolService _poolService;
         private List<CubeView> _cubes = new List<CubeView>();
 
+        public bool IsCubesOnSpawnPosition => _cubes.Count > 0;
 
         private void OnTriggerEnter(Collider c)
         {
