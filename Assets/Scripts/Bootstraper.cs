@@ -12,6 +12,26 @@ namespace Code.Views
 
         private void Awake()
         {
+            if (PlayerPrefs.GetInt("adsTerms", 0) == 0)
+            {
+                //show privice policy
+                SimpleGDPR.ShowDialog(new TermsOfServiceDialog()
+                        .SetTermsOfServiceLink(
+                            "https://doc-hosting.flycricket.io/blocks4098-terms-of-use/bcc28111-695e-4c45-9e6c-b67bdc87e4f8/terms")
+                        .SetPrivacyPolicyLink(
+                            "https://doc-hosting.flycricket.io/blocks4098-privacy-policy/c104fe74-a0b0-489c-bc3c-4b3b887d145f/privacy"),
+                    OnDiagClosed);
+            }
+            else
+            {
+                Application.targetFrameRate = 60;
+                InitializeAds();
+            }
+        }
+
+        private void OnDiagClosed()
+        {
+            PlayerPrefs.SetInt("adsTerms", 1);
             Application.targetFrameRate = 60;
             InitializeAds();
         }
@@ -26,12 +46,15 @@ namespace Code.Views
 
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
+                print("No internet!");
                 SceneManager.LoadScene(1);
                 return;
             }
 
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {
+                print("Internet is enabled!");
+
                 Advertisement.Initialize(_gameId, _testMode, this);
             }
             else

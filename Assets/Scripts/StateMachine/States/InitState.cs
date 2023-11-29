@@ -39,6 +39,7 @@ namespace Code.StateMachine.States
             map.transform.position = _sceneData.BasketSpawnPoint.position;
             //set cube spawn point
             _sceneData.CubeSpawnPoint = map.CubeSpawnPoint;
+            _sceneData.CleanSpawnRegion = GameObject.FindObjectOfType<CleanSpawnRegion>();
             //enable ui
             var topPanel = GameObject.FindObjectOfType<TopPanelView>(true);
             topPanel.SetLastRecord(_progressService.LastRecord);

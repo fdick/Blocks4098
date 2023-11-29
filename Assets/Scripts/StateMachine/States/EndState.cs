@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace Code.StateMachine.States
 {
-    public class EndState : IState, IUnityAdsShowListener
+    public class EndState : IState
     {
         public EndState(SceneData sceneData, ProgressService progress, AdsService adService)
         {
@@ -37,25 +37,30 @@ namespace Code.StateMachine.States
 
         private void ContinueGame()
         {
-            _sceneData.EndPanel.ContinueBtn.interactable = false;
-            _adsService.LoadAdUnit(_adsService.ANDROID_REWARDED_ID, adUnitId =>
+            _adsService.LoadAdUnit(_adsService.ANDROID_REWARDED_ID, 
+                adUnitId =>
             {
                 if (!adUnitId.Equals(_adsService.ANDROID_REWARDED_ID))
                     return;
+
                 _adsService.ShowAdUnit(_adsService.ANDROID_REWARDED_ID);
                 _adsService.OnCompletedAd += (adUnit, showCompletionState) =>
                 {
-                    if (adUnitId.Equals(_adsService.ANDROID_REWARDED_ID) &&
+
+                    if (adUnit.Equals(_adsService.ANDROID_REWARDED_ID) &&
                         showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
                     {
                         Debug.Log("Unity Ads Rewarded Ad Completed");
                         // Grant a reward.
                         onRewardedVideoFinished();
                     }
+                    _sceneData.CleanSpawnRegion.CleanRegion();
 
                     _sceneData.EndPanel.ContinueBtn.interactable = true;
                 };
             });
+            _sceneData.EndPanel.ContinueBtn.interactable = false;
+
         }
 
         private void RestartGame()
@@ -74,28 +79,29 @@ namespace Code.StateMachine.States
         }
 
 
-        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
-        {
-        }
-
-        public void OnUnityAdsShowStart(string placementId)
-        {
-        }
-
-        public void OnUnityAdsShowClick(string placementId)
-        {
-        }
-
-        // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
-        public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
-        {
-            if (adUnitId.Equals(_adsService.ANDROID_REWARDED_ID) &&
-                showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
-            {
-                Debug.Log("Unity Ads Rewarded Ad Completed");
-                // Grant a reward.
-                onRewardedVideoFinished();
-            }
-        }
+        // public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+        // {
+        // }
+        //
+        // public void OnUnityAdsShowStart(string placementId)
+        // {
+        // }
+        //
+        // public void OnUnityAdsShowClick(string placementId)
+        // {
+        // }
+        //
+        // // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
+        // public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
+        // {
+        //     if (adUnitId.Equals(_adsService.ANDROID_REWARDED_ID) &&
+        //         showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
+        //     {
+        //         Debug.Log("Unity Ads Rewarded Ad Completed");
+        //         // Grant a reward.
+        //         onRewardedVideoFinished();
+        //     }
+        //     
+        // }
     }
 }

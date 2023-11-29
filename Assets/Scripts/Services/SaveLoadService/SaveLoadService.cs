@@ -15,6 +15,8 @@ namespace Code.Services
             {
                 bf.Serialize(stream, value);
             }
+            Debug.Log($"SaveLoader: file is saved! Dir is {dir}");
+
         }
 
         public T Load<T>(string fileName)
@@ -24,7 +26,10 @@ namespace Code.Services
             var bf = new BinaryFormatter();
             T data;
             if (!File.Exists(dir))
+            {
+                Debug.Log($"SaveLoader: I didnt find that direction! Dir is {dir}");
                 return default;
+            }
             using (var stream = new FileStream(dir, FileMode.Open))
             {
                 data = (T)bf.Deserialize(stream);

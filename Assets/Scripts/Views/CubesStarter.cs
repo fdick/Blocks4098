@@ -1,4 +1,5 @@
 using System;
+using Code.Actors;
 using Code.Datas;
 using Code.Pools;
 using Code.Services;
@@ -20,6 +21,7 @@ namespace Code.Views
         private float _savedTime;
         [SerializeField] private AudioClip _startCubeSound;
         private CleanSpawnRegion _cleanSpawn;
+
 
         private void Awake()
         {
@@ -52,6 +54,10 @@ namespace Code.Views
 
             if (_cleanSpawn.IsCubesOnSpawnPosition)
                 return;
+            if (_currentCube != null)
+            {
+                _poolService.Return(_currentCube.GetComponent<CubeView>());
+            }
 
             _savedTime = Time.time;
 

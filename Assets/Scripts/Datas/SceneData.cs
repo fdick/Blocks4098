@@ -17,7 +17,7 @@ namespace Code.Datas
         [field: SerializeField] public AudioSource BackgroundMusicSource { get; private set; }
         [field: SerializeField] public AudioSource GameplaySoundsSource { get; private set; }
         [field: SerializeField] public GameObject StartPanelGO { get; private set; }
-        
+        public CleanSpawnRegion CleanSpawnRegion { get; set; }
         public Transform CubeSpawnPoint { get; set; }
     }
 }
